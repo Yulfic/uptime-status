@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Uptime Dashboard</title>
+	<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+	<header class="container">
+		<h1>Zdev Status</h1>
+		<div class="controls">
+			<button data-period="day" class="btn active">День</button>
+			<button data-period="week" class="btn">Неделя</button>
+			<button data-period="month" class="btn">Месяц</button>
+		</div>
+	</header>
+
+	<main class="container">
+		<section id="list"></section>
+	</main>
+
+	<template id="server-row">
+		<div class="row">
+			<div class="row-left">
+				<span class="pill ok" data-uptime>0%</span>
+				<span class="name" data-name></span>
+			</div>
+			<div class="row-right">
+				<div class="grid" data-grid></div>
+				<div class="hours" data-hours></div>
+				<div class="labels"><span data-start>—</span><span data-end>—</span></div>
+			</div>
+		</div>
+	</template>
+
+	<script src="/static/app.js"></script>
+</body>
+</html>

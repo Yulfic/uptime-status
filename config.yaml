@@ -1,0 +1,6 @@
+servers:
+  - name: server1
+    url: http://ip:port
+  - name: server2
+    url: http://ip:port
+request_timeout_seconds: 5
