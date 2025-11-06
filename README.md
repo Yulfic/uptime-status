@@ -49,5 +49,3 @@ request_timeout_seconds: 5      # таймаут запроса
 - Таймауты и период проверок: `config.yaml`
 - Цветовые пороги — см. `classForRatio()` в `static/app.js`
 - Размер ячеек/сеток — `static/style.css` (`grid-template-columns`, высота `.cell`)
-## Лицензия
-MIT (или любая другая по вашему выбору).
