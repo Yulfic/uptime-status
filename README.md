@@ -10,9 +10,6 @@
 - Фоновая проверка серверов и хранение результатов в `data/checks.ndjson`
 - Красивые анимации и аккуратный тёмный UI
 
-## Скриншот
-
-> Здесь можно вставить изображение UI
 
 ```
 static/
@@ -27,75 +24,22 @@ static/
 - aiosqlite не требуется (используем файл), можно легко заменить хранилище
 - Jinja2 (шаблон главной страницы)
 
-## Установка
-
-```bash
-python -m venv .venv
-. .venv/Scripts/activate  # Windows
-# source .venv/bin/activate  # Linux/macOS
-pip install -r requirements.txt
-```
 
 ## Конфиг
 Редактируйте `config.yaml`:
 
 ```yaml
 servers:
-  - name: ZPython
-    url: http://109.122.198.82:25737
-  - name: Donator-2
-    url: https://example.org/health
+  - name: Server1
+    url: http://ip:port
+  - name: server-2
+    url: https://server2.com
 check_interval_seconds: 60      # период проверки
 request_timeout_seconds: 5      # таймаут запроса
 ```
 
 - Проверки выполняются раз в `check_interval_seconds` и записываются в `data/checks.ndjson` (NDJSON: строка = 1 событие).
 
-## Запуск
-
-```bash
-python app.py
-# или
-uvicorn app:app --host 0.0.0.0 --port 25990
-```
-
-Откройте `http://localhost:25990`.
-
-## Как читать сетку
-- День: 24 колонки (00…23), цвет часа = доля успешных проверок в этом часе
-- Неделя/Месяц: по 1 колонке на день (средний аптайм за день)
-- Наведите курсор на ячейку — появится точный интервал и процент
-
-## Сдвиг отображения
-На фронтенде можно сдвинуть ячейки (и/или подсказки) на нужное количество часов — полезно для выравнивания с внешней шкалой.
-
-Параметры (в `static/app.js`):
-- `SHIFT_CELLS` — сдвиг ячеек (по позициям)
-- `SHIFT_TOOLTIP` — сдвиг времени в тултипе
-
-## API
-- `GET /api/uptime?period=day|week|month` — агрегированные данные
-- `POST /api/force-check` — принудительная мгновенная проверка всех серверов
-
-Пример ответа `/api/uptime` (фрагмент):
-```json
-{
-  "ZPython": {
-    "series": [{ "hour": 1730902800, "ok_ratio": 1.0 }, ...],
-    "uptime_percent": 98.5
-  }
-}
-```
-- `hour` — UNIX‑время начала часа (UTC). В UI отображается по МСК.
-- `ok_ratio` — доля успешных проверок за час (0..1), null = нет данных.
-
-## Развертывание
-- Продакшн‑запуск без `--reload`:
-```bash
-uvicorn app:app --host 0.0.0.0 --port 25990 --workers 2
-```
-- Поставьте systemd‑юнит или используйте процесс‑менеджер (supervisor/pm2/forever‑unix),
-- Проксируйте через Nginx/Caddy (gzip/HTTP/2, кеш статики `static/`).
 
 ## Хранилище
 - По умолчанию: `data/checks.ndjson` (удобно для простоты и переноса).
@@ -105,11 +49,5 @@ uvicorn app:app --host 0.0.0.0 --port 25990 --workers 2
 - Таймауты и период проверок: `config.yaml`
 - Цветовые пороги — см. `classForRatio()` в `static/app.js`
 - Размер ячеек/сеток — `static/style.css` (`grid-template-columns`, высота `.cell`)
-
-## Частые вопросы
-- «Почему всё серое?» — ещё нет данных. Нажмите «День» и подождите цикл проверки или вызовите `POST /api/force-check`.
-- «Не тот час/дата?» — убедитесь, что системное время и TZ (MSK) корректны; в UI используется `Europe/Moscow`.
-- «Хочу другие периоды (квартал/год)» — можно добавить новый `period` со своей агрегацией на бэкенде и отрисовкой в JS.
-
 ## Лицензия
 MIT (или любая другая по вашему выбору).
